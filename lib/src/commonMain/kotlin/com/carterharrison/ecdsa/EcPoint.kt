@@ -11,7 +11,7 @@ import com.ionspin.kotlin.bignum.integer.Sign
  * @property y The y value of the point on the curve.
  * @property curve The curve the point belongs to.
  */
-class EcPoint (val x : BigInteger, val y : BigInteger, val curve: EcCurve) {
+class EcPoint(val x: BigInteger, val y: BigInteger, val curve: EcCurve) {
 
     /**
      * Adds a point to this point.
@@ -19,7 +19,7 @@ class EcPoint (val x : BigInteger, val y : BigInteger, val curve: EcCurve) {
      * @param other The point to add to this point.
      * @return The sum of the two points.
      */
-    operator fun plus (other: EcPoint) : EcPoint {
+    operator fun plus(other: EcPoint): EcPoint {
         return curve.add(this, other)
     }
 
@@ -52,7 +52,7 @@ class EcPoint (val x : BigInteger, val y : BigInteger, val curve: EcCurve) {
     val xByteArray: ByteArray
         get() {
             val xarray = x.toByteArray()
-            return if (xarray[0].toInt() < 0){
+            return if (xarray[0].toInt() < 0) {
                 byteArrayOf(0, *xarray)
             } else {
                 xarray
@@ -62,7 +62,7 @@ class EcPoint (val x : BigInteger, val y : BigInteger, val curve: EcCurve) {
     val yByteArray: ByteArray
         get() {
             val yarray = y.toByteArray()
-            return if (yarray[0].toInt() < 0){
+            return if (yarray[0].toInt() < 0) {
                 byteArrayOf(0, *yarray)
             } else {
                 yarray

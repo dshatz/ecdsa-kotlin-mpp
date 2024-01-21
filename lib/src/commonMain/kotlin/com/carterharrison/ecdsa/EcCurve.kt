@@ -1,7 +1,6 @@
 package com.carterharrison.ecdsa
 
 import com.ionspin.kotlin.bignum.integer.BigInteger
-import com.ionspin.kotlin.bignum.integer.toBigInteger
 
 
 /**
@@ -11,37 +10,37 @@ abstract class EcCurve {
     /**
      * The prime modulus of the curve.
      */
-    abstract val p : BigInteger
+    abstract val p: BigInteger
 
     /**
      * The prime order of the curve.
      */
-    abstract val n : BigInteger
+    abstract val n: BigInteger
 
     /**
      * The a coefficient of the curve.
      */
-    abstract val a : BigInteger
+    abstract val a: BigInteger
 
     /**
      * The b coefficient of the curve.
      */
-    abstract val b : BigInteger
+    abstract val b: BigInteger
 
     /**
      * X cord of the generator point -> G.
      */
-    abstract val x : BigInteger
+    abstract val x: BigInteger
 
     /**
      * Y cord of the generator point -> G.
      */
-    abstract val y : BigInteger
+    abstract val y: BigInteger
 
     /**
      * The generator point of the curve.
      */
-    val g : EcPoint
+    val g: EcPoint
         get() = EcPoint(x, y, this)
 
     /**
@@ -49,7 +48,7 @@ abstract class EcCurve {
      *
      * (PRIME MODULUS, 0)
      */
-    val identity : EcPoint
+    val identity: EcPoint
         get() = PointMath.identity(g)
 
     /**
@@ -59,7 +58,7 @@ abstract class EcCurve {
      * @param p2 The second point.
      * @return The sum of the two points.
      */
-    fun add (p1 : EcPoint, p2: EcPoint) : EcPoint {
+    fun add(p1: EcPoint, p2: EcPoint): EcPoint {
         if (p1.x == p) {
             return p2
         } else if (p2.x == p) {
@@ -84,7 +83,7 @@ abstract class EcCurve {
      * @param n The number of times to dot the curve from g.
      * @return The point ended up on the curve.
      */
-    fun multiply (g : EcPoint, n : BigInteger) : EcPoint {
+    fun multiply(g: EcPoint, n: BigInteger): EcPoint {
         var r = identity
         var q = g
         var m = n
@@ -113,7 +112,7 @@ abstract class EcCurve {
      * @param point The point to add to the g point.
      * @return The sum of the two points.
      */
-    operator fun plus (point : EcPoint) : EcPoint {
+    operator fun plus(point: EcPoint): EcPoint {
         return add(g, point)
     }
 
@@ -123,7 +122,7 @@ abstract class EcCurve {
      * @param n The number of times to dot the curve from g.
      * @return The product of the point.
      */
-    operator fun times(n : BigInteger) : EcPoint {
+    operator fun times(n: BigInteger): EcPoint {
         return multiply(g, n)
     }
 }

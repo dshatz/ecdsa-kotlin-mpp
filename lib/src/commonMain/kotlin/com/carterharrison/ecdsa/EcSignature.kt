@@ -9,4 +9,4 @@ import com.ionspin.kotlin.bignum.integer.BigInteger
  * @property r The r value of the signature
  * @property s The s value of the signature
  */
-class EcSignature (val r : BigInteger, val s : BigInteger)
+class EcSignature(val r: BigInteger, val s: BigInteger)

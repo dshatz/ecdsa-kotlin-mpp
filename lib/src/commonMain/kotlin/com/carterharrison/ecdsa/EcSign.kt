@@ -13,7 +13,7 @@ object EcSign {
      * @param n The upper ceiling of [1 to n - 1]  to generate a random number
      * @return A secure random number between [1 and n - 1]
      */
-    private fun getRandomK (n : BigInteger) : BigInteger {
+    private fun getRandomK(n: BigInteger): BigInteger {
 
         val bytes = randomBits(256, SecureRandom())
         val randomValue = BigInteger.fromByteArray(bytes, Sign.POSITIVE)
@@ -61,7 +61,7 @@ object EcSign {
      * @param hasher The hasher to hash the data with before signing
      * @return The signer of the data, keypair, and hasher
      */
-    fun signData (keyPair: EcKeyPair, data : ByteArray, hasher : EcHasher) : EcSignature {
+    fun signData(keyPair: EcKeyPair, data: ByteArray, hasher: EcHasher): EcSignature {
         // todo range from 1 to n-1
         val hash = BigInteger.fromByteArray(hasher.hash(data), Sign.POSITIVE)
         val g = keyPair.publicKey.curve.g
@@ -91,7 +91,7 @@ object EcSign {
      * @param signature The signature signed by the public key
      * @return If the signature is valid
      */
-    fun verifySignature (publicKey : EcPoint, data: ByteArray, hasher: EcHasher, signature: EcSignature) : Boolean {
+    fun verifySignature(publicKey: EcPoint, data: ByteArray, hasher: EcHasher, signature: EcSignature): Boolean {
         val hash = BigInteger.fromByteArray(hasher.hash(data), Sign.POSITIVE)
         val g = publicKey.curve.g
         val n = publicKey.curve.n

@@ -8,26 +8,26 @@ import kotlin.test.assertEquals
 
 class EcPointTest {
 
-  @Test
-  fun tangent() {
-    val g = EcPoint(Secp256k1.x, Secp256k1.y, Secp256k1)
+    @Test
+    fun tangent() {
+        val g = EcPoint(Secp256k1.x, Secp256k1.y, Secp256k1)
 
-    assertEquals(
-      BigInteger.parseString("91914383230618135761690975197207778399550061809281766160147273830617914855857"),
-      PointMath.tangent(g, Secp256k1)
-    )
-  }
+        assertEquals(
+            BigInteger.parseString("91914383230618135761690975197207778399550061809281766160147273830617914855857"),
+            PointMath.tangent(g, Secp256k1)
+        )
+    }
 
-  @Test
-  fun parse() {
-    val keypair = EcKeyGenerator.newInstance(Secp256k1)
-    val publicKeyX = keypair.publicKey.xByteArray
-    val publicKeyY = keypair.publicKey.yByteArray
+    @Test
+    fun parse() {
+        val keypair = EcKeyGenerator.newInstance(Secp256k1)
+        val publicKeyX = keypair.publicKey.xByteArray
+        val publicKeyY = keypair.publicKey.yByteArray
 
-    val parsedPublicKey = EcPoint.fromByteArray(publicKeyX, publicKeyY, Secp256k1)
+        val parsedPublicKey = EcPoint.fromByteArray(publicKeyX, publicKeyY, Secp256k1)
 
-    assertEquals(keypair.publicKey, parsedPublicKey)
-  }
+        assertEquals(keypair.publicKey, parsedPublicKey)
+    }
 
 //    @Test
 //    fun mutpily () {
