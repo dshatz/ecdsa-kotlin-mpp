@@ -18,14 +18,15 @@ kotlin {
 
     jvm("desktop")
 
-    val nativeTarget = when {
-        hostOs == "Mac OS X" && isArm64 -> macosArm64("native")
-        hostOs == "Mac OS X" && !isArm64 -> macosX64("native")
-        hostOs == "Linux" && isArm64 -> linuxArm64("native")
-        hostOs == "Linux" && !isArm64 -> linuxX64("native")
-        isMingwX64 -> mingwX64("native")
-        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
-    }
+    val nativeTarget =
+        when {
+            hostOs == "Mac OS X" && isArm64 -> macosArm64("native")
+            hostOs == "Mac OS X" && !isArm64 -> macosX64("native")
+            hostOs == "Linux" && isArm64 -> linuxArm64("native")
+            hostOs == "Linux" && !isArm64 -> linuxX64("native")
+            isMingwX64 -> mingwX64("native")
+            else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
+        }
 
     nativeTarget.apply {
         binaries {
