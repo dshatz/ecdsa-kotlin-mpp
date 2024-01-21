@@ -19,10 +19,6 @@ jobs:
           java-version: '17'
       - name: Run tests
         shell: bash
-        env:
-          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVENCENTRALUSERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVENCENTRALPASSWORD }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNINGINMEMORYKEY }}
         run: ./gradlew lib:allTests
       - name: Test Summary
         uses: test-summary/action@v2
