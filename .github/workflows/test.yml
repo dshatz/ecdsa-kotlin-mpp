@@ -1,4 +1,4 @@
-name: Build Multiplatform project
+name: Run tests
 on:
   pull_request:
     types: [opened, reopened, edited, synchronize]
