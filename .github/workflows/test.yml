@@ -17,7 +17,7 @@ jobs:
         with:
           distribution: 'corretto'
           java-version: '17'
-      - name: Build Multiplatform project
+      - name: Run tests
         shell: bash
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVENCENTRALUSERNAME }}
@@ -29,10 +29,4 @@ jobs:
         with:
           paths: "lib/build/test-results/**/TEST-*.xml"
           output: test-summary.md
-        if: always()
-      - name: Upload test summary
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-summary
-          path: test-summary.md
         if: always()
