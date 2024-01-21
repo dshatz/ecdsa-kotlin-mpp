@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04]
+        os: [ubuntu-22.04, macos-12, windows-2022]
         gradle: [8.3]
     runs-on: ${{ matrix.os }}
     steps:
