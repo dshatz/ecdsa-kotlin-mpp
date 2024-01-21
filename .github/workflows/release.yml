@@ -21,8 +21,7 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVENCENTRALUSERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVENCENTRALPASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNINGINMEMORYKEY }}
-        run: |
-         - ./gradlew lib:publishAllPublicationsToMavenCentralRepository
+        run: ./gradlew lib:publishAllPublicationsToMavenCentralRepository
   release-multiplatform-lib-apple:
     runs-on: macos-12
     steps:
@@ -38,8 +37,8 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVENCENTRALPASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNINGINMEMORYKEY }}
         run: |
-          - ./gradlew lib:publishIosArm64PublicationToMavenCentralRepository
-          - ./gradlew lib:publishIosSimulatorArm64PublicationToMavenCentralRepository
-          - ./gradlew lib:publishIosX64PublicationToMavenCentralRepository
-          - ./gradlew lib:publishMacosArm64PublicationToMavenCentralRepository
-          - ./gradlew lib:publishMacosX64PublicationToMavenCentralRepository
+          ./gradlew lib:publishIosArm64PublicationToMavenCentralRepository
+          ./gradlew lib:publishIosSimulatorArm64PublicationToMavenCentralRepository
+          ./gradlew lib:publishIosX64PublicationToMavenCentralRepository
+          ./gradlew lib:publishMacosArm64PublicationToMavenCentralRepository
+          ./gradlew lib:publishMacosX64PublicationToMavenCentralRepository
