@@ -17,9 +17,21 @@ jobs:
         with:
           distribution: 'corretto'
           java-version: '17'
+      - name: Restore cached Konan
+        id: cache-konan-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: /home/runner/.konan/
+          key: ${{ runner.os }}-konan
       - name: Run tests
         shell: bash
         run: ./gradlew lib:allTests
+      - name: Save Konan
+        id: cache-konan-save
+        uses: actions/cache/save@v4
+        with:
+          path: /home/runner/.konan/
+          key: ${{ steps.cache-konan-restore.outputs.cache-primary-key }}
       - name: Test Summary
         uses: test-summary/action@v2
         with:
