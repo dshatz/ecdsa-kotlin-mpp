@@ -4,7 +4,7 @@ on:
     types: [opened, reopened, edited, synchronize]
 
 jobs:
-  release-multiplatform-lib:
+  run-tests:
     strategy:
       fail-fast: false
       matrix:
