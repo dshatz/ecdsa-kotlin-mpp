@@ -1,4 +1,6 @@
 import com.vanniktech.maven.publish.SonatypeHost
+import org.apache.commons.io.output.ByteArrayOutputStream
+import org.jetbrains.kotlin.backend.common.phaser.dumpToStdout
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
@@ -10,12 +12,6 @@ plugins {
 
 kotlin {
     val hostOs = System.getProperty("os.name")
-
-    androidTarget {
-        publishLibraryVariants("release")
-    }
-
-    jvm("desktop")
 
     if (hostOs == "Mac OS X") {
         macosArm64()
@@ -34,6 +30,11 @@ kotlin {
         linuxArm64()
         linuxX64()
         mingwX64()
+        androidTarget {
+            publishLibraryVariants("release")
+        }
+
+        jvm()
     }
 
     targets.filterIsInstance<KotlinNativeTarget>().forEach {
@@ -83,12 +84,35 @@ android {
     }
 }
 
+
+fun getVersion(): String {
+    val stdout = ByteArrayOutputStream()
+    val stdout2 = ByteArrayOutputStream()
+    exec {
+        executable = "git"
+        args("describe", "--tags", "--always", "--first-parent")
+        standardOutput = stdout
+    }
+    exec {
+        executable = "git"
+        args("rev-parse", "--abbrev-ref", "HEAD")
+        standardOutput = stdout2
+    }
+    val tagVersion = String(stdout.toByteArray())
+    val branchVersion = String(stdout2.toByteArray()).substringAfter("release/")
+    assert(tagVersion == branchVersion) {
+        "Version from tag ($tagVersion) not equal to branch version ($branchVersion)"
+    }
+    return tagVersion
+}
+
 mavenPublishing {
 //    publishToMavenCentral(SonatypeHost.DEFAULT)
     // or when publishing to https://s01.oss.sonatype.org
     publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
     signAllPublications()
-    coordinates("com.dshatz.kmp", "ecdsa", "1.0.0")
+    print(getVersion())
+    coordinates("com.dshatz.kmp", "ecdsa", getVersion())
 
     pom {
         name.set(project.name)
