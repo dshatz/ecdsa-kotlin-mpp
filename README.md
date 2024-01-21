@@ -26,6 +26,11 @@ This library comes with some hashing algorithms to create signatures, you can im
 * `SHA256`
 * `SHA512`
 
+## Supported Kotlin targets
+* JVM
+* Android
+* Native (Linux ARM, Linux X64, OSX X64, OSX Arm, Windows)
+
 ## Creating a Key Pair
 Creating a key pair is very simple, you may generate a random key pair, or generate one from a private key. The private key is simply a very large number.
 

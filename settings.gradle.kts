@@ -1,9 +1,6 @@
-rootProject.name = "compose-multiplatform-library-template"
+rootProject.name = "ecdsa-kotlin-mpp"
 
-include(":sample:androidApp")
 include(":lib")
-include(":sample:desktopApp")
-include(":sample:shared")
 
 pluginManagement {
     repositories {
