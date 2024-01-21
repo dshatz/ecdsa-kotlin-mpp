@@ -1,3 +1,4 @@
+import android.databinding.tool.ext.stripNonJava
 import com.vanniktech.maven.publish.SonatypeHost
 import org.apache.commons.io.output.ByteArrayOutputStream
 import org.jetbrains.kotlin.backend.common.phaser.dumpToStdout
@@ -66,7 +67,7 @@ kotlin {
 
 android {
     compileSdk = (findProperty("android.compileSdk") as String).toInt()
-    namespace = "com.myapplication.common"
+    namespace = "com.dshatz.kmp.ecdsa"
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
@@ -98,8 +99,8 @@ fun getVersion(): String {
         args("rev-parse", "--abbrev-ref", "HEAD")
         standardOutput = stdout2
     }
-    val tagVersion = String(stdout.toByteArray())
-    val branchVersion = String(stdout2.toByteArray()).substringAfter("release/")
+    val tagVersion = String(stdout.toByteArray()).strip()
+    val branchVersion = String(stdout2.toByteArray()).strip().substringAfter("release/")
     assert(tagVersion == branchVersion) {
         "Version from tag ($tagVersion) not equal to branch version ($branchVersion)"
     }
