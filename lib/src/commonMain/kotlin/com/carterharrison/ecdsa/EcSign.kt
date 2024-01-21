@@ -6,7 +6,6 @@ import com.ionspin.kotlin.bignum.integer.Sign
 import org.kotlincrypto.SecureRandom
 
 object EcSign {
-
     /**
      * Gets a secure random k value, that is between 1 and n - 1
      *
@@ -14,7 +13,6 @@ object EcSign {
      * @return A secure random number between [1 and n - 1]
      */
     private fun getRandomK(n: BigInteger): BigInteger {
-
         val bytes = randomBits(256, SecureRandom())
         val randomValue = BigInteger.fromByteArray(bytes, Sign.POSITIVE)
 
@@ -25,7 +23,6 @@ object EcSign {
         return randomValue
     }
 
-
     /**
      * Copied from java.math.BigInteger
      *
@@ -35,13 +32,16 @@ object EcSign {
      * bits is provided in {@code rnd}.  Note that this constructor always
      * constructs a non-negative BigInteger.
      *
-     * @param  numBits maximum bitLength of the new BigInteger.
-     * @param  rnd source of randomness to be used in computing the new
+     * @param numBits maximum bitLength of the new BigInteger.
+     * @param rnd source of randomness to be used in computing the new
      *         BigInteger.
      * @throws IllegalArgumentException {@code numBits} is negative.
      * @see #bitLength()
      */
-    private fun randomBits(numBits: Int, rnd: SecureRandom): ByteArray {
+    private fun randomBits(
+        numBits: Int,
+        rnd: SecureRandom,
+    ): ByteArray {
         if (numBits < 0) throw IllegalArgumentException("numBits must be non-negative")
         val numBytes = ((numBits.toLong() + 7) / 8).toInt() // avoid overflow
 
@@ -61,7 +61,11 @@ object EcSign {
      * @param hasher The hasher to hash the data with before signing
      * @return The signer of the data, keypair, and hasher
      */
-    fun signData(keyPair: EcKeyPair, data: ByteArray, hasher: EcHasher): EcSignature {
+    fun signData(
+        keyPair: EcKeyPair,
+        data: ByteArray,
+        hasher: EcHasher,
+    ): EcSignature {
         // todo range from 1 to n-1
         val hash = BigInteger.fromByteArray(hasher.hash(data), Sign.POSITIVE)
         val g = keyPair.publicKey.curve.g
@@ -91,7 +95,12 @@ object EcSign {
      * @param signature The signature signed by the public key
      * @return If the signature is valid
      */
-    fun verifySignature(publicKey: EcPoint, data: ByteArray, hasher: EcHasher, signature: EcSignature): Boolean {
+    fun verifySignature(
+        publicKey: EcPoint,
+        data: ByteArray,
+        hasher: EcHasher,
+        signature: EcSignature,
+    ): Boolean {
         val hash = BigInteger.fromByteArray(hasher.hash(data), Sign.POSITIVE)
         val g = publicKey.curve.g
         val n = publicKey.curve.n

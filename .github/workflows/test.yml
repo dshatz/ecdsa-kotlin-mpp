@@ -28,5 +28,4 @@ jobs:
         uses: test-summary/action@v2
         with:
           paths: "lib/build/test-results/**/TEST-*.xml"
-          output: test-summary.md
         if: always()

@@ -3,7 +3,6 @@ package com.carterharrison.ecdsa.curves
 import com.carterharrison.ecdsa.EcCurve
 import com.ionspin.kotlin.bignum.integer.BigInteger
 
-
 object Secp256r1 : EcCurve() {
     override val a: BigInteger =
         BigInteger.parseString("ffffffff00000001000000000000000000000000fffffffffffffffffffffffc", 16)

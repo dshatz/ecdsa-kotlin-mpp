@@ -2,7 +2,6 @@ package com.carterharrison.ecdsa
 
 import com.ionspin.kotlin.bignum.integer.BigInteger
 
-
 /**
  * A helper object to do point arithmetic in a prime field.
  */
@@ -15,7 +14,11 @@ object PointMath {
      * @param prime The prime modulus of the field.
      * @return The product of a and b
      */
-    fun multiply(a: BigInteger, b: BigInteger, prime: BigInteger): BigInteger {
+    fun multiply(
+        a: BigInteger,
+        b: BigInteger,
+        prime: BigInteger,
+    ): BigInteger {
         return (a * b) % prime
     }
 
@@ -27,7 +30,11 @@ object PointMath {
      * @param prime The prime modulus of the field.
      * @return The quotient of num and dom
      */
-    fun divide(num: BigInteger, dom: BigInteger, prime: BigInteger): BigInteger {
+    fun divide(
+        num: BigInteger,
+        dom: BigInteger,
+        prime: BigInteger,
+    ): BigInteger {
         val inverseDen = dom.toModularBigInteger(prime).inverse().toBigInteger()
         return multiply(num % prime, inverseDen, prime)
     }
@@ -39,7 +46,10 @@ object PointMath {
      * @param curve The curve that the point is on.
      * @return The slope of the tangent line at the point
      */
-    fun tangent(point: EcPoint, curve: EcCurve): BigInteger {
+    fun tangent(
+        point: EcPoint,
+        curve: EcCurve,
+    ): BigInteger {
         return divide(point.x * point.x * EcConstants.THREE + curve.a, point.y * EcConstants.TWO, curve.p)
     }
 
@@ -61,7 +71,12 @@ object PointMath {
      * @param curve The curve that the points are on.
      * @return The result of the dotting.
      */
-    fun dot(p1: EcPoint, p2: EcPoint, m: BigInteger, curve: EcCurve): EcPoint {
+    fun dot(
+        p1: EcPoint,
+        p2: EcPoint,
+        m: BigInteger,
+        curve: EcCurve,
+    ): EcPoint {
         val v = (p1.y + curve.p - (m * p1.x) % curve.p) % curve.p
         val x = (m * m + curve.p - p1.x + curve.p - p2.x) % curve.p
         val y = (curve.p - (m * x) % curve.p + curve.p - v) % curve.p

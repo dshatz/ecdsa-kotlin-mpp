@@ -2,7 +2,6 @@ package com.carterharrison.ecdsa
 
 import com.ionspin.kotlin.bignum.integer.BigInteger
 
-
 /**
  * A cryptographic elliptical curve to preform cryptography on.
  */
@@ -58,7 +57,10 @@ abstract class EcCurve {
      * @param p2 The second point.
      * @return The sum of the two points.
      */
-    fun add(p1: EcPoint, p2: EcPoint): EcPoint {
+    fun add(
+        p1: EcPoint,
+        p2: EcPoint,
+    ): EcPoint {
         if (p1.x == p) {
             return p2
         } else if (p2.x == p) {
@@ -83,14 +85,15 @@ abstract class EcCurve {
      * @param n The number of times to dot the curve from g.
      * @return The point ended up on the curve.
      */
-    fun multiply(g: EcPoint, n: BigInteger): EcPoint {
+    fun multiply(
+        g: EcPoint,
+        n: BigInteger,
+    ): EcPoint {
         var r = identity
         var q = g
         var m = n
 
         while (m != EcConstants.ZERO) {
-
-
             if (m and EcConstants.ONE != EcConstants.ZERO) {
                 r = add(r, q)
             }
@@ -100,7 +103,6 @@ abstract class EcCurve {
             if (m != EcConstants.ZERO) {
                 q = PointMath.double(q)
             }
-
         }
 
         return r

@@ -3,7 +3,6 @@ package com.carterharrison.ecdsa
 import com.ionspin.kotlin.bignum.integer.BigInteger
 import com.ionspin.kotlin.bignum.integer.Sign
 
-
 /**
  * A point on an elliptical curve (x, y).
  *
@@ -12,7 +11,6 @@ import com.ionspin.kotlin.bignum.integer.Sign
  * @property curve The curve the point belongs to.
  */
 class EcPoint(val x: BigInteger, val y: BigInteger, val curve: EcCurve) {
-
     /**
      * Adds a point to this point.
      *
@@ -70,11 +68,15 @@ class EcPoint(val x: BigInteger, val y: BigInteger, val curve: EcCurve) {
         }
 
     companion object {
-        fun fromByteArray(x: ByteArray, y: ByteArray, curve: EcCurve): EcPoint {
+        fun fromByteArray(
+            x: ByteArray,
+            y: ByteArray,
+            curve: EcCurve,
+        ): EcPoint {
             return EcPoint(
                 x = BigInteger.fromByteArray(x, Sign.POSITIVE),
                 y = BigInteger.fromByteArray(y, Sign.POSITIVE),
-                curve = curve
+                curve = curve,
             )
         }
     }

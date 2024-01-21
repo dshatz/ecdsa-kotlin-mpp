@@ -2,7 +2,6 @@ package com.carterharrison.ecdsa
 
 import com.ionspin.kotlin.bignum.integer.BigInteger
 
-
 /**
  * A class to store public and private keys in a keypair.
  *

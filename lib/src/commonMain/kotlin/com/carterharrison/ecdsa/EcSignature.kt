@@ -2,7 +2,6 @@ package com.carterharrison.ecdsa
 
 import com.ionspin.kotlin.bignum.integer.BigInteger
 
-
 /**
  * A class to hold R and S values from a signature.
  *

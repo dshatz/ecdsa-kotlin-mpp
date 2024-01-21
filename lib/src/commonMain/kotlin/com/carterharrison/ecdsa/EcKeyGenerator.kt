@@ -8,7 +8,6 @@ import org.kotlincrypto.SecureRandom
  * A set of functions to help create EcKeyPairs
  */
 object EcKeyGenerator {
-
     /**
      * Creates a random KeyPair on a curve.
      *
@@ -27,7 +26,10 @@ object EcKeyGenerator {
      * @param privateKey The private key to create a public key from.
      * @param curve The curve to create the public key on.
      */
-    fun newInstance(privateKey: BigInteger, curve: EcCurve): EcKeyPair {
+    fun newInstance(
+        privateKey: BigInteger,
+        curve: EcCurve,
+    ): EcKeyPair {
         val publicKey = (curve.g * privateKey)
         return EcKeyPair(publicKey, privateKey)
     }
