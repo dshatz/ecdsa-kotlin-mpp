@@ -1,0 +1,39 @@
+name: Run tests
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+
+jobs:
+  run-tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04]
+        gradle: [8.3]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+      - name: Restore cached Konan
+        id: cache-konan-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: /home/runner/.konan/
+          key: ${{ runner.os }}-konan
+      - name: Run tests
+        shell: bash
+        run: ./gradlew lib:allTests
+      - name: Save Konan
+        id: cache-konan-save
+        uses: actions/cache/save@v4
+        with:
+          path: /home/runner/.konan/
+          key: ${{ steps.cache-konan-restore.outputs.cache-primary-key }}
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "lib/build/test-results/**/TEST-*.xml"
+        if: always()

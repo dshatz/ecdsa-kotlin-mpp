@@ -3,17 +3,38 @@ import com.vanniktech.maven.publish.SonatypeHost
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("org.jetbrains.compose")
     id("org.jetbrains.dokka")
     id("com.vanniktech.maven.publish")
 }
 
 kotlin {
+    val hostOs = System.getProperty("os.name")
+    val isArm64 = System.getProperty("os.arch") == "aarch64"
+    val isMingwX64 = hostOs.startsWith("Windows")
+
     androidTarget {
         publishLibraryVariants("release")
     }
 
     jvm("desktop")
+
+    val nativeTarget =
+        when {
+            hostOs == "Mac OS X" && isArm64 -> macosArm64("native")
+            hostOs == "Mac OS X" && !isArm64 -> macosX64("native")
+            hostOs == "Linux" && isArm64 -> linuxArm64("native")
+            hostOs == "Linux" && !isArm64 -> linuxX64("native")
+            isMingwX64 -> mingwX64("native")
+            else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
+        }
+
+    nativeTarget.apply {
+        binaries {
+            sharedLib {
+                baseName = "native"
+            }
+        }
+    }
 
     listOf(
         iosX64(),
@@ -29,9 +50,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material)
+                implementation("org.kotlincrypto:secure-random:0.2.0")
+                implementation("com.ionspin.kotlin:bignum:0.3.8")
+                implementation(project.dependencies.platform("org.kotlincrypto.hash:bom:0.4.0"))
+                implementation("org.kotlincrypto.hash:sha2")
             }
         }
         val androidMain by getting {
@@ -49,6 +71,11 @@ kotlin {
         }
         val desktopMain by getting {
             dependencies {
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
             }
         }
     }
@@ -79,13 +106,13 @@ mavenPublishing {
     // or when publishing to https://s01.oss.sonatype.org
     publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
     signAllPublications()
-    coordinates("com.example.mylibrary", "mylibrary-runtime", "1.0.0")
+    coordinates("com.dshatz.kmp", "ecdsa", "1.0.0")
 
     pom {
         name.set(project.name)
-        description.set("A description of what my library does.")
-        inceptionYear.set("2023")
-        url.set("https://github.com/username/mylibrary/")
+        description.set("A simple, lightweight, fast elliptical curve cryptography library in pure kotlin.")
+        inceptionYear.set("2024")
+        url.set("https://github.com/dshatz/ecdsa-kotlin-mpp/")
         licenses {
             license {
                 name.set("The Apache License, Version 2.0")
@@ -95,15 +122,15 @@ mavenPublishing {
         }
         developers {
             developer {
-                id.set("username")
-                name.set("User Name")
-                url.set("https://github.com/username/")
+                id.set("dshatz")
+                name.set("Daniels Šatcs")
+                url.set("https://github.com/dshatz/")
             }
         }
         scm {
-            url.set("https://github.com/username/mylibrary/")
-            connection.set("scm:git:git://github.com/username/mylibrary.git")
-            developerConnection.set("scm:git:ssh://git@github.com/username/mylibrary.git")
+            url.set("https://github.com/dshatz/ecdsa-kotlin-mpp/")
+            connection.set("scm:git:git://github.com/dshatz/ecdsa-kotlin-mpp.git")
+            developerConnection.set("scm:git:ssh://git@github.com/dshatz/ecdsa-kotlin-mpp.git")
         }
     }
 }
