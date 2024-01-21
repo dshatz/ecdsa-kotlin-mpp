@@ -1,4 +1,5 @@
 import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
@@ -9,8 +10,6 @@ plugins {
 
 kotlin {
     val hostOs = System.getProperty("os.name")
-    val isArm64 = System.getProperty("os.arch") == "aarch64"
-    val isMingwX64 = hostOs.startsWith("Windows")
 
     androidTarget {
         publishLibraryVariants("release")
@@ -18,32 +17,32 @@ kotlin {
 
     jvm("desktop")
 
-    val nativeTarget =
-        when {
-            hostOs == "Mac OS X" && isArm64 -> macosArm64("native")
-            hostOs == "Mac OS X" && !isArm64 -> macosX64("native")
-            hostOs == "Linux" && isArm64 -> linuxArm64("native")
-            hostOs == "Linux" && !isArm64 -> linuxX64("native")
-            isMingwX64 -> mingwX64("native")
-            else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
-        }
-
-    nativeTarget.apply {
-        binaries {
-            sharedLib {
-                baseName = "native"
+    if (hostOs == "Mac OS X") {
+        macosArm64()
+        macosX64()
+        listOf(
+            iosX64(),
+            iosArm64(),
+            iosSimulatorArm64(),
+        ).forEach { iosTarget ->
+            iosTarget.binaries.framework {
+                baseName = rootProject.name
+                isStatic = true
             }
         }
+    } else {
+        linuxArm64()
+        linuxX64()
+        mingwX64()
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "lib"
-            isStatic = true
+    targets.filterIsInstance<KotlinNativeTarget>().forEach {
+        it.apply {
+            binaries {
+                sharedLib {
+                    baseName = rootProject.name
+                }
+            }
         }
     }
 
@@ -54,23 +53,6 @@ kotlin {
                 implementation("com.ionspin.kotlin:bignum:0.3.8")
                 implementation(project.dependencies.platform("org.kotlincrypto.hash:bom:0.4.0"))
                 implementation("org.kotlincrypto.hash:sha2")
-            }
-        }
-        val androidMain by getting {
-            dependencies {
-            }
-        }
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
-        }
-        val desktopMain by getting {
-            dependencies {
             }
         }
         val commonTest by getting {
