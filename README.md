@@ -13,6 +13,10 @@
 
 A simple, yet lightweight, fast elliptical curve cryptography library in kotlin. **Please note that this library must undergo further testing before using in production.**
 
+```kotlin
+implementation("com.dshatz.kmp:ecdsa:1.0.1")
+```
+
 
 ## Supported Curves
 This library comes with a plethora of curves, but do not worry! You can create your own curve to fit your cryptographic needs. Below are listed the curves that come out of the box. 
